@@ -1,0 +1,44 @@
+<!-- -->
+<launch>
+	<arg name="points_node" default="/velodyne_obstacles" /><!--CHANGE THIS TO READ WHETHER FROM VSCAN OR POINTS_RAW -->
+	<arg name="publish_ground" default="true" />
+	<arg name="publish_filtered" default="true" />
+    <arg name="is_downsampling" default="false" />
+    <arg name="distance" default="0.5" />
+    <arg name="leaf_size" default="0.1" />
+    <arg name="cluster_size_min" default="50" />
+    <arg name="cluster_size_max" default="2500" />
+    <arg name="sync" default="false" />
+<arg name="full_clouds" default="true" />
+<arg name="cell_size" default="0.3" />
+<arg name="grid_dimensions" default="20" />
+
+    
+<!-- velodyne height map -->	
+	<node pkg="velodyne_height_map" type="heightmap_node" name="heightmap_node">
+		<param name="full_clouds" value="$(arg full_clouds)" />
+		<param name="cell_size" value="$(arg cell_size)" />
+		<param name="grid_dimensions" value="$(arg grid_dimensions)" />
+  
+	</node>
+
+
+	<!-- rosrun lidar_tracker euclidean_cluster _points_node:="" -->
+	<node pkg="lidar_tracker" type="euclidean_cluster" name="euclidean_cluster">
+		<param name="points_node" value="$(arg points_node)" />
+		<param name="publish_ground" value="$(arg publish_ground)" /><!--GROUND FILTERING LIKELY WONT WORK ON VSCAN (for obvious reasons)-->
+		<param name="publish_filtered" value="$(arg publish_filtered)" /><!--POINTS FILTERING LIKELY WONT WORK ON VSCAN (for obvious reasons)-->
+        <param name="is_downsampling" value="$(arg is_downsampling)" />
+        <param name="distance" value="$(arg distance)" />
+        <param name="leaf_size" value="$(arg leaf_size)" />
+        <param name="cluster_size_min" value="$(arg cluster_size_min)" />
+        <param name="cluster_size_max" value="$(arg cluster_size_max)" />
+	</node>
+<!-- rosrun lidar_tracker lidar tracker -->
+	<node pkg="lidar_tracker" type="tracker" name="tracker" />
+	</node>
+<!-- rosrun rviz rviz -->
+	<node pkg="rviz" type="rviz" name="rviz" />
+
+	</node>
+</launch>

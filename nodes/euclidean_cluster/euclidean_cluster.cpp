@@ -21,7 +21,7 @@
 #include <pcl/common/common.h>
 
 #include <visualization_msgs/Marker.h>
-#include "/home/sarthak/catkin_ws/src/lidar_tracker/include/centroids.h"
+#include "~/catkin_ws/src/lidar_tracker/include/centroids.h"
 
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
